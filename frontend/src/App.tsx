@@ -4,7 +4,7 @@ function App() {
   const [exam, setExam] = useState<any>(null);
 
   useEffect(() => {
-    fetch("http://localhost:3000/api/exam/sample")
+    fetch("/api/exam")   // now calls Vercel serverless backend
       .then((r) => r.json())
       .then(setExam);
   }, []);

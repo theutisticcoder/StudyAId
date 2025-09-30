@@ -1,0 +1,756 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>StudyAI - Free AI-Powered Learning Platform</title>
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>
+        window.MathJax = {
+            tex: {
+                inlineMath: [['$', '$'], ['\\(', '\\)']],
+                displayMath: [['$$', '$$'], ['\\[', '\\]']]
+            }
+        };
+    </script>
+    <style>
+        body {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        header {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 0;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 800;
+            color: #4f46e5;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+            margin: 0;
+            padding: 0;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: #374151;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+
+        .nav-links a:hover {
+            color: #4f46e5;
+        }
+
+        .mobile-menu {
+            display: none;
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+
+        .hero {
+            text-align: center;
+            padding: 4rem 0;
+            color: white;
+        }
+
+        .hero h1 {
+            font-size: 3.5rem;
+            font-weight: 800;
+            margin-bottom: 1rem;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .hero p {
+            font-size: 1.25rem;
+            margin-bottom: 2rem;
+            opacity: 0.9;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .cta-button {
+            background: #10b981;
+            color: white;
+            padding: 1rem 2rem;
+            border: none;
+            border-radius: 50px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-decoration: none;
+            display: inline-block;
+            box-shadow: 0 4px 15px rgba(16, 185, 129, 0.4);
+        }
+
+        .cta-button:hover {
+            background: #059669;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(16, 185, 129, 0.6);
+        }
+
+        .features {
+            background: white;
+            padding: 4rem 0;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .feature-card {
+            background: #f8fafc;
+            padding: 2rem;
+            border-radius: 16px;
+            border: 1px solid #e2e8f0;
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+            border-color: #4f46e5;
+        }
+
+        .feature-icon {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .feature-card h3 {
+            color: #1f2937;
+            margin-bottom: 1rem;
+            font-size: 1.25rem;
+            font-weight: 600;
+        }
+
+        .ap-exams {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            padding: 4rem 0;
+            color: white;
+        }
+
+        .ap-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+
+        .ap-subject {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            padding: 1rem;
+            border-radius: 12px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .ap-subject:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: scale(1.05);
+        }
+
+        .study-tools {
+            background: white;
+            padding: 4rem 0;
+        }
+
+        .tool-interface {
+            background: #f8fafc;
+            border-radius: 16px;
+            padding: 2rem;
+            margin-top: 2rem;
+            border: 1px solid #e2e8f0;
+        }
+
+        .chat-interface {
+            max-height: 400px;
+            overflow-y: auto;
+            background: white;
+            border-radius: 12px;
+            padding: 1rem;
+            margin-bottom: 1rem;
+            border: 1px solid #e2e8f0;
+        }
+
+        .message {
+            margin-bottom: 1rem;
+            padding: 0.75rem;
+            border-radius: 8px;
+        }
+
+        .user-message {
+            background: #dbeafe;
+            margin-left: 2rem;
+        }
+
+        .ai-message {
+            background: #f0fdf4;
+            margin-right: 2rem;
+        }
+
+        .input-group {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .chat-input {
+            flex: 1;
+            padding: 0.75rem;
+            border: 1px solid #d1d5db;
+            border-radius: 8px;
+            font-size: 1rem;
+        }
+
+        .send-button {
+            background: #4f46e5;
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: background 0.3s;
+        }
+
+        .send-button:hover {
+            background: #3730a3;
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            color: #1f2937;
+        }
+
+        .section-subtitle {
+            text-align: center;
+            font-size: 1.1rem;
+            color: #6b7280;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .accommodations {
+            background: #fef3c7;
+            padding: 2rem;
+            border-radius: 12px;
+            margin: 2rem 0;
+            border-left: 4px solid #f59e0b;
+        }
+
+        .footer {
+            background: #1f2937;
+            color: white;
+            padding: 3rem 0;
+            text-align: center;
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .footer-section h4 {
+            margin-bottom: 1rem;
+            color: #f9fafb;
+        }
+
+        .footer-section a {
+            color: #d1d5db;
+            text-decoration: none;
+            display: block;
+            margin-bottom: 0.5rem;
+            transition: color 0.3s;
+        }
+
+        .footer-section a:hover {
+            color: #4f46e5;
+        }
+
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+
+            .mobile-menu {
+                display: block;
+            }
+
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+
+            .hero p {
+                font-size: 1.1rem;
+            }
+
+            .features-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .ap-grid {
+                grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            }
+
+            .input-group {
+                flex-direction: column;
+            }
+
+            .send-button {
+                align-self: flex-end;
+                width: 100px;
+            }
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .exam-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+
+        .modal-content {
+            background: white;
+            padding: 2rem;
+            border-radius: 16px;
+            max-width: 600px;
+            width: 90%;
+            max-height: 80vh;
+            overflow-y: auto;
+        }
+
+        .close-modal {
+            float: right;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: #6b7280;
+        }
+
+        .close-modal:hover {
+            color: #1f2937;
+        }
+
+        .question {
+            margin-bottom: 2rem;
+            padding: 1.5rem;
+            background: #f8fafc;
+            border-radius: 12px;
+        }
+
+        .question-options {
+            margin-top: 1rem;
+        }
+
+        .option {
+            display: block;
+            margin: 0.5rem 0;
+            padding: 0.5rem;
+            cursor: pointer;
+            border-radius: 6px;
+            transition: background 0.3s;
+        }
+
+        .option:hover {
+            background: #e5e7eb;
+        }
+
+        .option input {
+            margin-right: 0.5rem;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <nav class="container">
+            <div class="logo">
+                🧠 StudyAI
+            </div>
+            <ul class="nav-links">
+                <li><a href="#home">Home</a></li>
+                <li><a href="#features">Features</a></li>
+                <li><a href="#ap-exams">AP Exams</a></li>
+                <li><a href="#tools">Study Tools</a></li>
+                <li><a href="#contact">Contact</a></li>
+            </ul>
+            <button class="mobile-menu" onclick="toggleMobileMenu()">☰</button>
+        </nav>
+    </header>
+
+    <main>
+        <section id="home" class="hero">
+            <div class="container">
+                <h1>Master Any Subject with AI</h1>
+                <p>Free AI-powered study tools, practice exams for all 36 AP subjects, and personalized learning support. Powered by Google Gemini.</p>
+                <a href="#tools" class="cta-button">Start Learning Free</a>
+            </div>
+        </section>
+
+        <section id="features" class="features">
+            <div class="container">
+                <h2 class="section-title">Powerful Learning Features</h2>
+                <p class="section-subtitle">Everything you need to excel in your studies, completely free</p>
+                
+                <div class="features-grid">
+                    <div class="feature-card" onclick="scrollToSection('tools')">
+                        <div class="feature-icon">🤖</div>
+                        <h3>AI Study Assistant</h3>
+                        <p>Get instant help with any subject. Ask questions, solve problems, and receive detailed explanations powered by Google Gemini.</p>
+                    </div>
+                    
+                    <div class="feature-card" onclick="scrollToSection('ap-exams')">
+                        <div class="feature-icon">📝</div>
+                        <h3>Full-Length Practice Exams</h3>
+                        <p>Complete practice tests for all 36 AP subjects with AI grading and detailed feedback following College Board format.</p>
+                    </div>
+                    
+                    <div class="feature-card">
+                        <div class="feature-icon">♿</div>
+                        <h3>Accessibility Support</h3>
+                        <p>Full accommodations including extended time, screen readers, and alternative formats for students with disabilities.</p>
+                    </div>
+                    
+                    <div class="feature-card">
+                        <div class="feature-icon">📱</div>
+                        <h3>Mobile Responsive</h3>
+                        <p>Study anywhere, anytime. Our platform works perfectly on all devices - phone, tablet, or computer.</p>
+                    </div>
+                    
+                    <div class="feature-card">
+                        <div class="feature-icon">∑</div>
+                        <h3>LaTeX Math Support</h3>
+                        <p>Beautiful mathematical equations rendered with LaTeX. Perfect for calculus, physics, and chemistry problems.</p>
+                    </div>
+                    
+                    <div class="feature-card">
+                        <div class="feature-icon">📊</div>
+                        <h3>Progress Tracking</h3>
+                        <p>Monitor your improvement with detailed analytics and personalized study recommendations.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="ap-exams" class="ap-exams">
+            <div class="container">
+                <h2 class="section-title">All 36 AP Practice Exams</h2>
+                <p class="section-subtitle">Full-length practice tests with AI grading and instant feedback</p>
+                
+                <div class="accommodations">
+                    <h4>🌟 Accommodations Available</h4>
+                    <p>We provide extended time, large print, screen reader compatibility, and other accommodations as needed. Contact us to set up your personalized testing environment.</p>
+                </div>
+                
+                <div class="ap-grid">
+                    <div class="ap-subject" onclick="startExam('AP Calculus AB')">AP Calculus AB</div>
+                    <div class="ap-subject" onclick="startExam('AP Calculus BC')">AP Calculus BC</div>
+                    <div class="ap-subject" onclick="startExam('AP Statistics')">AP Statistics</div>
+                    <div class="ap-subject" onclick="startExam('AP Physics 1')">AP Physics 1</div>
+                    <div class="ap-subject" onclick="startExam('AP Physics 2')">AP Physics 2</div>
+                    <div class="ap-subject" onclick="startExam('AP Physics C: Mechanics')">AP Physics C: Mechanics</div>
+                    <div class="ap-subject" onclick="startExam('AP Physics C: E&M')">AP Physics C: E&M</div>
+                    <div class="ap-subject" onclick="startExam('AP Chemistry')">AP Chemistry</div>
+                    <div class="ap-subject" onclick="startExam('AP Biology')">AP Biology</div>
+                    <div class="ap-subject" onclick="startExam('AP Environmental Science')">AP Environmental Science</div>
+                    <div class="ap-subject" onclick="startExam('AP Computer Science A')">AP Computer Science A</div>
+                    <div class="ap-subject" onclick="startExam('AP Computer Science Principles')">AP Computer Science Principles</div>
+                    <div class="ap-subject" onclick="startExam('AP English Language')">AP English Language</div>
+                    <div class="ap-subject" onclick="startExam('AP English Literature')">AP English Literature</div>
+                    <div class="ap-subject" onclick="startExam('AP US History')">AP US History</div>
+                    <div class="ap-subject" onclick="startExam('AP World History')">AP World History</div>
+                    <div class="ap-subject" onclick="startExam('AP European History')">AP European History</div>
+                    <div class="ap-subject" onclick="startExam('AP Government')">AP Government</div>
+                    <div class="ap-subject" onclick="startExam('AP Macroeconomics')">AP Macroeconomics</div>
+                    <div class="ap-subject" onclick="startExam('AP Microeconomics')">AP Microeconomics</div>
+                    <div class="ap-subject" onclick="startExam('AP Psychology')">AP Psychology</div>
+                    <div class="ap-subject" onclick="startExam('AP Human Geography')">AP Human Geography</div>
+                    <div class="ap-subject" onclick="startExam('AP Spanish Language')">AP Spanish Language</div>
+                    <div class="ap-subject" onclick="startExam('AP Spanish Literature')">AP Spanish Literature</div>
+                    <div class="ap-subject" onclick="startExam('AP French Language')">AP French Language</div>
+                    <div class="ap-subject" onclick="startExam('AP German Language')">AP German Language</div>
+                    <div class="ap-subject" onclick="startExam('AP Chinese Language')">AP Chinese Language</div>
+                    <div class="ap-subject" onclick="startExam('AP Japanese Language')">AP Japanese Language</div>
+                    <div class="ap-subject" onclick="startExam('AP Latin')">AP Latin</div>
+                    <div class="ap-subject" onclick="startExam('AP Art History')">AP Art History</div>
+                    <div class="ap-subject" onclick="startExam('AP Music Theory')">AP Music Theory</div>
+                    <div class="ap-subject" onclick="startExam('AP Studio Art 2D')">AP Studio Art 2D</div>
+                    <div class="ap-subject" onclick="startExam('AP Studio Art 3D')">AP Studio Art 3D</div>
+                    <div class="ap-subject" onclick="startExam('AP Studio Art Drawing')">AP Studio Art Drawing</div>
+                    <div class="ap-subject" onclick="startExam('AP Seminar')">AP Seminar</div>
+                    <div class="ap-subject" onclick="startExam('AP Research')">AP Research</div>
+                </div>
+            </div>
+        </section>
+
+        <section id="tools" class="study-tools">
+            <div class="container">
+                <h2 class="section-title">AI Study Assistant</h2>
+                <p class="section-subtitle">Ask questions, solve problems, and get instant help with any subject</p>
+                
+                <div class="tool-interface">
+                    <div class="chat-interface" id="chatInterface">
+                        <div class="message ai-message">
+                            <strong>StudyAI:</strong> Hi! I'm your AI study assistant powered by Google Gemini. I can help you with any subject, solve math problems with LaTeX formatting, and provide detailed explanations. Try asking me something like:
+                            <br><br>
+                            • "Explain the quadratic formula"<br>
+                            • "Help me understand photosynthesis"<br>
+                            • "Solve this calculus problem: find the derivative of $f(x) = x^2 + 3x + 2$"
+                        </div>
+                    </div>
+                    
+                    <div class="input-group">
+                        <input type="text" class="chat-input" id="chatInput" placeholder="Ask me anything about any subject..." onkeypress="handleEnter(event)">
+                        <button class="send-button" onclick="sendMessage()">Send</button>
+                    </div>
+                </div>
+                
+                <div style="margin-top: 2rem; padding: 1rem; background: #f0f9ff; border-radius: 8px; border-left: 4px solid #0ea5e9;">
+                    <h4>Example Math Problem with LaTeX:</h4>
+                    <p>The quadratic formula is: $$x = \frac{-b \pm \sqrt{b^2 - 4ac}}{2a}$$</p>
+                    <p>For the equation $ax^2 + bx + c = 0$, where $a \neq 0$.</p>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h4>StudyAI</h4>
+                    <p>Free AI-powered learning platform for students worldwide. Democratizing access to quality education.</p>
+                </div>
+                <div class="footer-section">
+                    <h4>Features</h4>
+                    <a href="#tools">AI Study Assistant</a>
+                    <a href="#ap-exams">AP Practice Exams</a>
+                    <a href="#features">Accommodations</a>
+                </div>
+                <div class="footer-section">
+                    <h4>Support</h4>
+                    <a href="#contact">Contact Us</a>
+                    <a href="#help">Help Center</a>
+                    <a href="#accessibility">Accessibility</a>
+                </div>
+                <div class="footer-section">
+                    <h4>Technology</h4>
+                    <p>Powered by Google Gemini AI</p>
+                    <p>LaTeX Math Rendering</p>
+                    <p>Mobile Responsive Design</p>
+                </div>
+            </div>
+            <div style="border-top: 1px solid #374151; padding-top: 2rem; margin-top: 2rem;">
+                <p>&copy; 2024 StudyAI. Free for all students. Made with ❤️ for education.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Exam Modal -->
+    <div id="examModal" class="exam-modal hidden">
+        <div class="modal-content">
+            <span class="close-modal" onclick="closeExam()">&times;</span>
+            <h2 id="examTitle">AP Practice Exam</h2>
+            <div id="examContent">
+                <div class="question">
+                    <h3>Sample Question 1</h3>
+                    <p>If $f(x) = 2x^2 + 3x - 1$, what is $f'(x)$?</p>
+                    <div class="question-options">
+                        <label class="option">
+                            <input type="radio" name="q1" value="a"> $4x + 3$
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q1" value="b"> $2x^2 + 3$
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q1" value="c"> $4x^2 + 3x$
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q1" value="d"> $x^2 + 3x - 1$
+                        </label>
+                    </div>
+                </div>
+                
+                <div class="question">
+                    <h3>Sample Question 2</h3>
+                    <p>What is the limit: $$\lim_{x \to 0} \frac{\sin(x)}{x}$$</p>
+                    <div class="question-options">
+                        <label class="option">
+                            <input type="radio" name="q2" value="a"> 0
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q2" value="b"> 1
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q2" value="c"> ∞
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q2" value="d"> Does not exist
+                        </label>
+                    </div>
+                </div>
+                
+                <button class="cta-button" onclick="submitExam()" style="margin-top: 2rem;">Submit Exam for AI Grading</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function toggleMobileMenu() {
+            const navLinks = document.querySelector('.nav-links');
+            navLinks.style.display = navLinks.style.display === 'flex' ? 'none' : 'flex';
+        }
+
+        function scrollToSection(sectionId) {
+            document.getElementById(sectionId).scrollIntoView({ behavior: 'smooth' });
+        }
+
+        function sendMessage() {
+            const input = document.getElementById('chatInput');
+            const chatInterface = document.getElementById('chatInterface');
+            const message = input.value.trim();
+            
+            if (!message) return;
+            
+            // Add user message
+            const userMessage = document.createElement('div');
+            userMessage.className = 'message user-message';
+            userMessage.innerHTML = `<strong>You:</strong> ${message}`;
+            chatInterface.appendChild(userMessage);
+            
+            // Clear input
+            input.value = '';
+            
+            // Simulate AI response
+            setTimeout(() => {
+                const aiMessage = document.createElement('div');
+                aiMessage.className = 'message ai-message';
+                
+                let response = '';
+                if (message.toLowerCase().includes('quadratic')) {
+                    response = `The quadratic formula is used to solve equations of the form $ax^2 + bx + c = 0$. The formula is: $$x = \\frac{-b \\pm \\sqrt{b^2 - 4ac}}{2a}$$ This gives you the x-intercepts (roots) of the parabola. The discriminant $b^2 - 4ac$ tells us about the nature of the roots.`;
+                } else if (message.toLowerCase().includes('derivative')) {
+                    response = `To find derivatives, use these basic rules:<br>• Power rule: $\\frac{d}{dx}[x^n] = nx^{n-1}$<br>• Constant rule: $\\frac{d}{dx}[c] = 0$<br>• Sum rule: $\\frac{d}{dx}[f(x) + g(x)] = f'(x) + g'(x)$<br><br>For example, if $f(x) = x^2 + 3x + 2$, then $f'(x) = 2x + 3$.`;
+                } else if (message.toLowerCase().includes('photosynthesis')) {
+                    response = `Photosynthesis is the process by which plants convert light energy into chemical energy. The overall equation is: $$6CO_2 + 6H_2O + \\text{light energy} \\rightarrow C_6H_{12}O_6 + 6O_2$$ This occurs in two main stages: light-dependent reactions (in thylakoids) and light-independent reactions (Calvin cycle in stroma).`;
+                } else {
+                    response = `I'd be happy to help you with that! As an AI study assistant powered by Google Gemini, I can provide detailed explanations on any subject. Could you be more specific about what you'd like to learn? I can help with math problems (with LaTeX formatting), science concepts, history, literature, and much more.`;
+                }
+                
+                aiMessage.innerHTML = `<strong>StudyAI:</strong> ${response}`;
+                chatInterface.appendChild(aiMessage);
+                
+                // Re-render MathJax for new content
+                if (window.MathJax) {
+                    MathJax.typesetPromise([aiMessage]).catch((err) => console.log(err.message));
+                }
+                
+                // Scroll to bottom
+                chatInterface.scrollTop = chatInterface.scrollHeight;
+            }, 1000);
+            
+            // Scroll to bottom
+            chatInterface.scrollTop = chatInterface.scrollHeight;
+        }
+
+        function handleEnter(event) {
+            if (event.key === 'Enter') {
+                sendMessage();
+            }
+        }
+
+        function startExam(subject) {
+            document.getElementById('examTitle').textContent = `${subject} Practice Exam`;
+            document.getElementById('examModal').classList.remove('hidden');
+            
+            // Re-render MathJax for modal content
+            if (window.MathJax) {
+                MathJax.typesetPromise([document.getElementById('examModal')]).catch((err) => console.log(err.message));
+            }
+        }
+
+        function closeExam() {
+            document.getElementById('examModal').classList.add('hidden');
+        }
+
+        function submitExam() {
+            alert('🎉 Exam submitted! AI grading complete.\n\nYour Score: 85%\n\nQuestion 1: Correct! ✓\nQuestion 2: Correct! ✓\n\nDetailed feedback and explanations have been generated. In a real implementation, this would show comprehensive results with study recommendations.');
+            closeExam();
+        }
+
+        // Close modal when clicking outside
+        document.getElementById('examModal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeExam();
+            }
+        });
+
+        // Smooth scrolling for navigation links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth' });
+                }
+            });
+        });
+    </script>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'98740e4560522c8b',t:'MTc1OTIzODgyNi4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>
